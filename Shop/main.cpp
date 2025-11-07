@@ -15,16 +15,20 @@ std::string currentStatus;
 
 void Start();
 bool Login();
-
-void Getline(std::string& str);
-void Err();
+void CreateStorage()
+{
+	const size_t staticSize = 10;
+	int id[staticSize]{ 1,2,3,4,5,6,7,8,9,10 };
+}
+inline void Getline(std::string& str);
+inline void Err();
 int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	srand(time(NULL));
 	Start();
-
+	delete[]loginArr, passArr, statusArr;
 
 	return 0;
 }
@@ -33,25 +37,50 @@ int main()
 
 void Start()
 {
+	std::string choose;
 	std::cout << "\n\n\nФпс до небес\n\n\n";
 
 	if (Login())
 	{
-		if (currentStatus == currentStatus[0])
+		if (currentStatus == userStatus[0])
 		{
-
+			while (true)
+			{
+				std::cout << "Выберите тип склада\n1 - Готовый\n2 - Новый\nВвод: ";
+				Getline(choose);
+				if (choose == "1")
+				{
+					//готовый склад
+					break;
+				}
+				else if (choose == "2")
+				{
+					//создать новый склад
+					break;
+				}
+				else
+				{
+					Err();
+				}
+			}
+			
 		}
-		else if (currentStatus == currentStatus[1])
+		else if (currentStatus == userStatus[1])
 		{
-
+			//готовый склад
 		}
-		else if (currentStatus == currentStatus[2])
+		else if (currentStatus == userStatus[2])
 		{
-
+			//готовый склад
 		}
 
 	}
-
+	else
+	{
+		std::cout << "Завершение работы\n";
+		Sleep(2000);
+		system("cls");
+	}
 
 }
 
@@ -95,14 +124,14 @@ bool Login()
 
 	}
 }
-void Getline(std::string& str)
+inline void Getline(std::string& str)
 {
 	std::getline(std::cin, str, '\n');
 
 
 
 }
-void Err()
+inline void Err()
 {
 	std::cout << "Некорректный ввод\n\n";
 
