@@ -13,12 +13,29 @@ std::string* passArr = new std::string[userSize]{ "admin", "user" };
 std::string* statusArr = new std::string[userSize]{ userStatus[0],userStatus[2] };
 std::string currentStatus;
 
+//--------------------------------------------------склад-------------------------------------------------------------
+
+size_t storageSize = 10;
+int* idArr = new int[storageSize] {};
+std::string* nameArr = new std::string[storageSize]{};
+double* priceArr = new double[storageSize] {};
+unsigned int* cout = new unsigned int[storageSize] {};
+//--------------------------------------------------------------------------------------------------------------------------
 void Start();
 bool Login();
 void CreateStorage()
 {
 	const size_t staticSize = 10;
 	int id[staticSize]{ 1,2,3,4,5,6,7,8,9,10 };
+	std::string name[staticSize]
+	{
+		"i5 14600kf", "rtx 5040", "ryzen 7 2700", "gt 1030", "rx 580", "i9 9900kf", "ryzen 7 7800x3d", "rtx 3080ti", "i7 7700k", "rx9070"
+
+
+
+	};
+	double price[staticSize]{ 15000, 3000, 5000, 1490.99, 3599, 12999, 28000, 40000, 7777, 25000 };
+	unsigned int count[staticSize]{ 50,45,3,100,150,15,500,1,7,1000 };
 }
 inline void Getline(std::string& str);
 inline void Err();
