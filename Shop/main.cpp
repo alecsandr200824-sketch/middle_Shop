@@ -16,13 +16,20 @@ std::string currentStatus;
 //--------------------------------------------------склад-------------------------------------------------------------
 
 size_t storageSize = 0;
+size_t maxItemSize = 299;
 unsigned int* idArr = nullptr;
 std::string* nameArr = nullptr;
 double* priceArr = nullptr;
 unsigned int* coutArr = nullptr;
 bool isStorageCreated = false;
-
+//--------------------------------------------------служеб-------------------------------------------------------------
 void CreateStorage();
+void ShowStorage(int mode = 0);
+void AddStorageItem();
+bool IsNumber(const std::string& str);
+inline void Getline(std::string& str);
+
+
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
@@ -39,9 +46,42 @@ void ShowSuperAdminMenu()
 
 
 		}
-		
-		
-		
+		else if (choose == "2")
+		{
+
+		}
+		else if (choose == "3")
+		{
+
+		}
+		else if (choose == "4")
+		{
+
+		}
+		else if (choose == "5")
+		{
+
+		}
+
+		else if (choose == "6")
+		{
+
+		}
+
+		else if (choose == "7")
+		{
+
+		}
+
+		else if (choose == "8")
+		{
+
+		}
+
+		else if (choose == "0")
+		{
+
+		}
 		std::cout << "1 - Начать продажу\n";
 		std::cout << "2 - Показать склад\n";
 		std::cout << "3 - Пополнить склад\n";
@@ -52,7 +92,7 @@ void ShowSuperAdminMenu()
 		std::cout << "8 - Отчет о прибыли\n";
 		std::cout << "0 - Закрыть смену\n";
 		std::cout << "Ввод: ";
-		//Getline(choose);
+		Getline(choose);
 	}
 
 
@@ -84,17 +124,119 @@ void CreateStorage()
 	FillArr(priceArr, price, storageSize);
 }
 
-void ShowStorage()
+void ShowStorage(int mode)
 {
-	std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
-		<< "Цена\t" << "Кол-во\n";
-	for (size_t i = 0; i < storageSize; i++)
+	if (mode == 0)
 	{
-		std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t"
-			<< priceArr[i] << "\t" << coutArr[i] << "\n";
+		std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
+			<< "Цена\t" << "Кол-во\n";
+		for (size_t i = 0; i < storageSize; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t"
+				<< priceArr[i] << "\t" << coutArr[i] << "\n";
+		}
+		system("pause");
+		system("cls");
+	}
+	else if (mode == 1)
+	{
+		std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
+			<< "Кол-во\n";
+		for (size_t i = 0; i < storageSize; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t"
+				<< "\t" << coutArr[i] << "\n";
+		}
+		system("pause");
+		system("cls");
+	}
+	else if (mode == 2)
+	{
+		std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
+			<< "Цена\t\n";
+		for (size_t i = 0; i < storageSize; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t"
+				<< priceArr[i] << "\t" << "\n";
+		}
+		system("pause");
+		system("cls");
+
 	}
 }
 
+void AddStorageItem()
+{
+	std::string chooseId, chooseCount;
+	unsigned int id = 0, count = 0;
+	while (true)
+	{
+		system("cls");
+		ShowStorage(1);
+		std::cout << "Введите ID товара или \"exit\" для выхода";
+		Getline(chooseId);
+		if (chooseId == "exit")
+		{
+
+			std::cout << "Отмена операции пополнения склада!\n";
+			Sleep(1500);
+			system("cls");
+			break;
+
+		}
+		std::cout << "Введите кол-во товара для пополнения";
+		Getline(chooseCount);
+
+		if (IsNumber(chooseId) && IsNumber(chooseCount))
+		{
+			id = std::stoi(chooseId) - 1;
+			count = std::stoi(chooseCount);
+
+			if (id < 0 || id > storageSize - 1 || count < 0 || count > 299)
+			{
+				std::cout << "Некорректный id или кол-во\nМаксимальное кол-во - " << maxItemSize << "\n\n";
+				Sleep(1500);
+
+			}
+			else
+			{
+				std::cout << std::left << std::setw(25) << nameArr[id] << "\t"
+					<< countArr[id] << " ---> " << countArr[id] + count << "\n\n";
+
+
+
+			}
+		
+		
+		}
+
+		
+	}
+
+}
+bool IsNumber(const std::string& str) 
+{
+	if (str.size() <= 0 || str.size() >= 10)
+	{
+		std::cout << "Некоректный ввод\n";
+		std::cout << "Ошибка размера числа. От 1 до 9 символов включительно\n\n";
+		Sleep(1500);
+		return false;
+	
+	}	
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (!std::isdigit(str[i]))
+		{
+			std::cout << "Некоректный ввод\n";
+			std::cout << "Введенные данные не являются числом\n\n";
+			Sleep(1500);
+			return false;
+
+		}
+	}
+	return true;
+}
 inline void Getline(std::string& str);
 inline void Err();
 int main()
@@ -106,12 +248,11 @@ int main()
 	delete[]loginArr, passArr, statusArr;
 	if (isStorageCreated)
 	{
-		delete[]loginArr, passArr, statusArr;
+		delete[]idArr, passArr, statusArr;
 	}
 	return 0;
 }
-template<typename ArrType>
-           
+
 
 void Start()
 {
@@ -120,6 +261,7 @@ void Start()
 
 	if (Login())
 	{
+		system("cls");
 		if (currentStatus == userStatus[0])
 		{
 			while (true)
@@ -129,6 +271,7 @@ void Start()
 				if (choose == "1")
 				{
 					CreateStorage();
+					system("cls");
 					ShowSuperAdminMenu();
 					break;
 				}
@@ -215,4 +358,13 @@ inline void Err()
 {
 	std::cout << "Некорректный ввод\n\n";
 
+}
+
+template<typename ArrType>
+void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize)
+{
+	for (size_t i = 0; i < arraySize; i++)
+	{
+		dynamicArr[i] = staticArr[i];
+	}
 }
