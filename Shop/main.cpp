@@ -28,6 +28,35 @@ void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
 void Start();
 bool Login();
+void ShowSuperAdminMenu()
+{
+	std::string choose;
+	while (true)
+	{
+		if (choose == "1")
+		{
+			
+
+
+		}
+		
+		
+		
+		std::cout << "1 - Начать продажу\n";
+		std::cout << "2 - Показать склад\n";
+		std::cout << "3 - Пополнить склад\n";
+		std::cout << "4 - Списать товар\n";
+		std::cout << "5 - Изменить цену\n";
+		std::cout << "6 - Редактировать склад\n";
+		std::cout << "7 - Редактировать персонал\n";
+		std::cout << "8 - Отчет о прибыли\n";
+		std::cout << "0 - Закрыть смену\n";
+		std::cout << "Ввод: ";
+		//Getline(choose);
+	}
+
+
+}
 void CreateStorage()
 {
 	const size_t staticSize = 10;
@@ -82,14 +111,7 @@ int main()
 	return 0;
 }
 template<typename ArrType>
-void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize)
-{
-	for (size_t i = 0; i < arraySize; i++)
-	{
-		dynamicArr[i] = staticArr[i];
-	}
-}
-
+           
 
 void Start()
 {
@@ -107,12 +129,13 @@ void Start()
 				if (choose == "1")
 				{
 					CreateStorage();
-					ShowStorage();
+					ShowSuperAdminMenu();
 					break;
 				}
 				else if (choose == "2")
 				{
 					//создать новый склад
+					ShowSuperAdminMenu();
 					break;
 				}
 				else
