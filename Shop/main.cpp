@@ -15,18 +15,23 @@ std::string currentStatus;
 
 //--------------------------------------------------склад-------------------------------------------------------------
 
-size_t storageSize = 10;
-int* idArr = new int[storageSize] {};
-std::string* nameArr = new std::string[storageSize]{};
-double* priceArr = new double[storageSize] {};
-unsigned int* cout = new unsigned int[storageSize] {};
+size_t storageSize = 0;
+unsigned int* idArr = nullptr;
+std::string* nameArr = nullptr;
+double* priceArr = nullptr;
+unsigned int* coutArr = nullptr;
+bool isStorageCreated = false;
+
+void CreateStorage();
+template<typename ArrType>
+void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
 void Start();
 bool Login();
 void CreateStorage()
 {
 	const size_t staticSize = 10;
-	int id[staticSize]{ 1,2,3,4,5,6,7,8,9,10 };
+	unsigned int id[staticSize]{ 1,2,3,4,5,6,7,8,9,10 };
 	std::string name[staticSize]
 	{
 		"i5 14600kf", "rtx 5040", "ryzen 7 2700", "gt 1030", "rx 580", "i9 9900kf", "ryzen 7 7800x3d", "rtx 3080ti", "i7 7700k", "rx9070"
@@ -36,7 +41,31 @@ void CreateStorage()
 	};
 	double price[staticSize]{ 15000, 3000, 5000, 1490.99, 3599, 12999, 28000, 40000, 7777, 25000 };
 	unsigned int count[staticSize]{ 50,45,3,100,150,15,500,1,7,1000 };
+
+	storageSize = staticSize;
+	idArr = new unsigned int[storageSize];
+	nameArr = new std::string[storageSize];
+	coutArr = new unsigned int[storageSize];
+	priceArr = new double[storageSize];
+	isStorageCreated = true;
+
+	FillArr(idArr, id, storageSize);
+	FillArr(nameArr, name, storageSize);
+	FillArr(coutArr, count, storageSize);
+	FillArr(priceArr, price, storageSize);
 }
+
+void ShowStorage()
+{
+	std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
+		<< "Цена\t" << "Кол-во\n";
+	for (size_t i = 0; i < storageSize; i++)
+	{
+		std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t"
+			<< priceArr[i] << "\t" << coutArr[i] << "\n";
+	}
+}
+
 inline void Getline(std::string& str);
 inline void Err();
 int main()
@@ -46,10 +75,20 @@ int main()
 	srand(time(NULL));
 	Start();
 	delete[]loginArr, passArr, statusArr;
-
+	if (isStorageCreated)
+	{
+		delete[]loginArr, passArr, statusArr;
+	}
 	return 0;
 }
-
+template<typename ArrType>
+void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize)
+{
+	for (size_t i = 0; i < arraySize; i++)
+	{
+		dynamicArr[i] = staticArr[i];
+	}
+}
 
 
 void Start()
@@ -67,7 +106,8 @@ void Start()
 				Getline(choose);
 				if (choose == "1")
 				{
-					//готовый склад
+					CreateStorage();
+					ShowStorage();
 					break;
 				}
 				else if (choose == "2")
@@ -106,9 +146,9 @@ bool Login()
 	std::string login, pass;
 	while (true)
 	{
-		std::cout << "Введите логин";
+		std::cout << "Введите логин: ";
 		Getline(login);
-		std::cout << "Введите пароль";
+		std::cout << "Введите пароль: ";
 		Getline(pass);
 
 		if (login == "exit" && pass == "exit")
