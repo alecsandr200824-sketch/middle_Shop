@@ -167,7 +167,7 @@ void ShowStorage(int mode)
 
 void AddStorageItem()
 {
-	std::string chooseId, chooseCount;
+	std::string chooseId, chooseCount, choose;
 	unsigned int id = 0, count = 0;
 	while (true)
 	{
@@ -201,8 +201,19 @@ void AddStorageItem()
 			else
 			{
 				std::cout << std::left << std::setw(25) << nameArr[id] << "\t"
-					<< countArr[id] << " ---> " << countArr[id] + count << "\n\n";
+					<< coutArr[id] << " ---> " << coutArr[id] + count << "\n\n";
+				std::cout << "Подтвердить?\n1 - Да\n2 - Нет\nВвод: ";
+				Getline(choose);
+				if (choose == "1")
+				{
+					coutArr[id] += count;
+					std::cout << "Товар успешно пополнен\n\n";
+					Sleep(1500);
+					system("cls");
+					break;
 
+
+				}
 
 
 			}
