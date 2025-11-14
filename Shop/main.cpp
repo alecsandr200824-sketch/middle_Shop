@@ -35,6 +35,7 @@ void RemoveStorageItem();
 void ChangePrice();
 void ChangeStorage();
 void AddNewItem();
+void ChandeName();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
@@ -145,7 +146,7 @@ void ChangeStorage()
 			}
 			else if (choose == "2")
 			{
-
+				ChandeName();
 			}
 			else if (choose == "3")
 			{
@@ -174,7 +175,7 @@ void AddNewItem()
 
 		while (true)
 		{
-			system("csl");
+			system("cls");
 
 			std::cout << "\tДобавление нового товара!\n\nВведите \"exit\" для прекращения операции\n\n";
 
@@ -228,7 +229,7 @@ void AddNewItem()
 		}
 		while (exit)
 		{
-			system("csl");
+			system("cls");
 			std::cout << "\tДобавление нового товара!\n\nВведите \"exit\" для прекращения операции\n\n";
 			std::cout << "Введите цену нового товара: ";
 			Getline(newPrice);
@@ -285,7 +286,7 @@ void AddNewItem()
 				std::swap(priceArr, priceArrTemp);
 				
 				delete[]idArrTemp, nameArrTemp, countArrTemp, priceArrTemp;
-				std::cout << "Идёт подготовка??...";
+				std::cout << "Идёт подготовка...";
 				Sleep(2000);
 				std::cout << "Товар успешно добавлен!\n\n";
 				Sleep(1500);
@@ -311,6 +312,45 @@ void AddNewItem()
 	system("pause");
 	//storageSize++;
 	//unsigned int* idArrTemp = new unsigned int[storageSize];
+}
+void ChandeName() 
+{
+	std::string chooseId, newName, choose;
+	unsigned int id = 0;
+	while (true)
+	{
+		system("cls");
+		ShowStorage(3);
+		std::cout << "Введите ID товара или \"exit\"ждя выхода: ";
+		Getline(chooseId);
+
+		if (chooseId == "exit")
+		{
+			std::cout << "Операция смены названия прервана!\n\n";
+			Sleep(1500);
+			break;
+		}
+
+		std::cout << "\tВведите название нового товара: ";
+
+		Getline(newName);
+
+		
+		if (newName.size() <= 0 || newName.size() >= 50 || newName == "exit")
+		{
+			std::cout << "Максимальная длина название 50 символов\n";
+			Sleep(1500);
+
+		}
+		else if (IsNumber(chooseId))
+		{
+			id = std::stoi(chooseId);
+			std::cout << "\n" << std::left << std::setw(25)
+				<< nameArr[id] << " ---> " << newName << "\n\n";
+			std::cout << "Подтвердить?\n1 - Да\n2 - Нет\nВвод: ";
+			Getline(choose);
+		}
+	}
 }
 void CreateStorage()
 {
@@ -376,6 +416,17 @@ void ShowStorage(int mode)
 		}
 		system("pause");
 		system("cls");
+
+	}
+	else if (mode == 3)
+	{
+		std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
+			<< "Цена\t\n";
+		for (size_t i = 0; i < storageSize; i++)
+		{
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\n";
+			
+		}
 
 	}
 }
