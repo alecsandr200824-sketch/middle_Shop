@@ -45,13 +45,14 @@ void ChangeStorage();
 void AddNewItem();
 void ChandeName();
 void DeleteItem();
-void ShowUsers();
+void ShowUsers(int mode = 0);
 void AddNewUser();
 bool CheckLogin(const std::string& str);
 void SetSpecialSymbols();
 void ChangeAccount();
 void SetPassSymbols();
 void AddNewUser();
+void ChangePass();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
@@ -199,7 +200,10 @@ bool CheckPass(const std::string& str)
 		{
 			numCount++;
 		}
-	
+		if (specialPassSym.count(sym))
+		{
+			symCount++;
+		}
 	}
 
 	if (numCount > 2 && symCount > 3)
@@ -379,14 +383,29 @@ void ChangeStorage()
 	
 	}
 }
-void ShowUsers()
+void ShowUsers(int mode)
 {
-	system("cls");
-	std::cout << "№\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
-	for (size_t i = 1; i < userSize; i++)
+	if (mode == 0)
 	{
-		std::cout << i << "\t" << std::left << std::setw(8) << loginArr[i] << "\t\t" << passArr[i]
-			<< "\t\t\t" << statusArr[i] << "\n";
+	
+		system("cls");
+		std::cout << "№\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
+		for (size_t i = 1; i < userSize; i++)
+		{
+			std::cout << i << "\t" << std::left << std::setw(8) << loginArr[i] << "\t\t" << passArr[i]
+				<< "\t\t\t" << statusArr[i] << "\n";
+		}
+		Sleep(2000);
+	}
+	else if (mode == 1)
+	{
+		std::cout << "№\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
+		for (size_t i = 0; i < userSize; i++)
+		{
+			std::cout << i << "\t" << std::left << std::setw(8) << loginArr[i] << "\t\t" << passArr[i]
+				<< "\t\t\t" << statusArr[i] << "\n";
+		}
+		Sleep(2000);
 	}
 }
 void AddNewItem()
@@ -664,6 +683,57 @@ void ChandeName()
 		}
 	}
 }
+void ChangePass()
+{
+	std::string newPass1, newPass2, choose;
+	int userNumber = 0;
+	while (true)
+	{
+		if (currentStatus == userStatus[0])
+		{
+			ShowUsers(1);
+		}
+		else
+		{
+			ShowUsers();
+		}
+
+		std::cout << "\nВведите пользователя или \"exit\" для выхода: ";
+		Getline(choose);
+
+		if (choose == "exit")
+		{
+			std::cout << "Отмена изменения пароля!\n";
+			Sleep(1500);
+			break;
+		}
+		if (IsNumber(choose))
+		{
+			userNumber = std::stoi(choose);
+			
+			
+			if (userNumber < 0 || userNumber > userSize - 1)
+			{
+				std::cout << "Пользователя с таким номером не существует!\n";
+				Sleep(1500);
+				break;
+			}
+
+			for (size_t i = 0; i < userSize; i++)
+			{
+				if (i == userNumber)
+				{
+					std::cout << "Введите новый пароль для пользователя " << loginArr[i] << ": ";
+					Getline(newPass1);
+					std::cout << "Подтвердите новый пароль для пользователя " << loginArr[i] << ": ";
+					Getline(newPass2);
+				}
+			}
+			
+
+		}
+	}
+}
 void CreateStorage()
 {
 	const size_t staticSize = 10;
@@ -774,7 +844,6 @@ void ShowStorage(int mode)
 
 	}
 }
-
 void ChangeAccount()
 {
 	std::string choose;
@@ -796,11 +865,11 @@ void ChangeAccount()
 		std::cout << "0 - Выход из редактора аккаунтов\n";
 		std::cout << "Ввод: ";
 		Getline(choose);
-		if (choose == "1" && storageSize > 0)
+		if (choose == "1" && storageSize > 1)
 		{
-
+			AddNewUser();
 		}
-		else if (choose == "2" && storageSize > 0)
+		else if (choose == "2" && storageSize > 1)
 		{
 			ShowUsers();
 		}
@@ -824,7 +893,6 @@ void ChangeAccount()
 
 	}
 }
-
 void AddStorageItem()
 {
 	std::string chooseId, chooseCount, choose;
@@ -893,7 +961,6 @@ void AddStorageItem()
 	}
 
 }
-
 void RemoveStorageItem()
 {
 	
@@ -965,7 +1032,6 @@ void RemoveStorageItem()
 
 	
 }
-
 void ShowSuperAdminMenu()
 {
 	std::string choose;
@@ -1033,7 +1099,6 @@ void ShowSuperAdminMenu()
 
 
 }
-
 bool IsNumber(const std::string& str) 
 {
 	if (str.size() <= 0 || str.size() >= 10)
@@ -1057,7 +1122,6 @@ bool IsNumber(const std::string& str)
 	}
 	return true;
 }
-
 void Start()
 {
 	std::string choose;
@@ -1124,7 +1188,6 @@ void Start()
 	}
 
 }
-
 bool Login()
 {
 	std::string login, pass;
@@ -1165,7 +1228,6 @@ bool Login()
 
 	}
 }
-
 inline void Getline(std::string& str)
 {
 	std::getline(std::cin, str, '\n');
