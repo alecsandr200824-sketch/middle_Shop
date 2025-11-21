@@ -53,6 +53,7 @@ void ChangeAccount();
 void SetPassSymbols();
 void AddNewUser();
 void ChangePass();
+void DeleteUser();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 //--------------------------------------------------------------------------------------------------------------------------
@@ -405,7 +406,7 @@ void ShowUsers(int mode)
 			std::cout << i << "\t" << std::left << std::setw(8) << loginArr[i] << "\t\t" << passArr[i]
 				<< "\t\t\t" << statusArr[i] << "\n";
 		}
-		Sleep(2000);
+		
 	}
 }
 void AddNewItem()
@@ -683,19 +684,117 @@ void ChandeName()
 		}
 	}
 }
+void DeleteUser()
+{
+	std::string chooseNumber, choose, checkPass;
+	int userNumber = 0;
+	int isAdmin = 0;
+	while (true)
+	{
+
+		if (currentStatus == userStatus[0])
+		{
+			if (userSize < 2)
+			{
+				std::cout << "Нет допустимых пользователей для удаления\n";
+				Sleep(1500);
+				return;
+			}
+			ShowUsers();
+			isAdmin = 1;
+		}
+		else
+		{
+			//ShowUsers();
+			//isAdmin = 1;
+		}
+		std::cout << "\nВведите номер пользователя для удаления \"exit\" для выхода: ";
+		Getline(choose);
+
+		if (choose == "exit")
+		{
+			std::cout << "Отмена изменения пользователя!\n";
+			Sleep(1500);
+			break;
+		}
+
+		
+		else if (IsNumber(choose))
+		{
+			userNumber = std::stoi(choose);
+
+			if (userNumber < isAdmin || userNumber > userSize - 1)
+			{
+				std::cout << "Пользователя с таким номером не существует!\n";
+				Sleep(1500);
+				
+			}
+			for (size_t i = isAdmin; i < userSize; i++)
+			{
+				if (i == userNumber)
+				{
+					system("cls");
+					std::cout << "Удалить пользователя: " << loginArr[i] << "\n\n";
+					std::cout << "Для подтверждения введите пароль супер админа или \"exit\" для выхода: ";
+					Getline(choose);
+
+					if (choose == "exit")
+					{
+						std::cout << "Отмена изменения пользователя!\n";
+						Sleep(1500);
+						break;
+					}
+					else if (checkPass == passArr[0])
+					{
+						userSize--;
+						std::string* loginArrTemp = new std::string[userSize];
+						std::string* passArrTemp = new std::string[userSize];
+						std::string* statusArrTemp = new std::string[userSize];
+						for (size_t i = 0, c = 0; i < userSize; i++, c++)
+						{
+							if (userNumber == c)
+							{
+								c++;
+							}
+							loginArrTemp[i] = loginArr[c];
+							passArrTemp[i] = passArr[c];
+							statusArrTemp[i] = statusArr[c];
+
+						}
+						std::swap(loginArrTemp, loginArr);
+						std::swap(passArrTemp, passArr);
+						std::swap(statusArrTemp, statusArr);
+					
+						delete[] loginArrTemp, passArrTemp, statusArrTemp;
+						std::cout << "Идёт подготовка...";
+						Sleep(2000);
+						std::cout << "Пользователь успешно удален!\n\n";
+						Sleep(1500);
+						break;
+					}
+					
+				}
+			}
+				
+		}
+	}
+}
 void ChangePass()
 {
 	std::string newPass1, newPass2, choose;
 	int userNumber = 0;
+	int isAdmin = 0;
 	while (true)
 	{
 		if (currentStatus == userStatus[0])
 		{
 			ShowUsers(1);
+			isAdmin = 0;
 		}
 		else
 		{
 			ShowUsers();
+			isAdmin = 1;
 		}
 
 		std::cout << "\nВведите пользователя или \"exit\" для выхода: ";
@@ -712,7 +811,7 @@ void ChangePass()
 			userNumber = std::stoi(choose);
 			
 			
-			if (userNumber < 0 || userNumber > userSize - 1)
+			if (userNumber < isAdmin || userNumber > userSize - 1)
 			{
 				std::cout << "Пользователя с таким номером не существует!\n";
 				Sleep(1500);
@@ -723,10 +822,24 @@ void ChangePass()
 			{
 				if (i == userNumber)
 				{
+					system("cls");
 					std::cout << "Введите новый пароль для пользователя " << loginArr[i] << ": ";
 					Getline(newPass1);
 					std::cout << "Подтвердите новый пароль для пользователя " << loginArr[i] << ": ";
 					Getline(newPass2);
+					if (newPass1 == newPass2)
+					{
+						passArr[i] = newPass1;
+						std::cout << "Успешно\n";
+						Sleep(1500);
+						break;
+					}
+					else
+					{
+						std::cout << "Повторите попытку\n";
+						Sleep(1500);
+						i--;
+					}
 				}
 			}
 			
@@ -875,15 +988,15 @@ void ChangeAccount()
 		}
 		else if (choose == "3" && storageSize > 0)
 		{
-			
+			ChangePass();
 		}
 		else if (choose == "4" && storageSize > 0)
 		{
-
+			DeleteUser();
 		}
 		else if (choose == "0")
 		{
-
+			
 		}
 		else
 		{
