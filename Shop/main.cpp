@@ -17,7 +17,7 @@ double* salesArr = new double[userSize] {0.0, 0.0};
 unsigned int* userIdArr = new unsigned int[userSize] {1, 2};
 unsigned int currentId = 0;
 std::string currentStatus;
-void CheckArrPushback(const bool& isFirst);
+void CheckArrPushback();
 void ChangeAccount();
 void PrintCheck(double& totalSum);
 
@@ -39,6 +39,8 @@ void CreateStorage();
 void ShowStorage(int mode = 0);
 void AddStorageItem();
 void ShowSuperAdminMenu();
+void ShowAdminMenu();
+void ShowuserMenu();
 bool IsNumber(const std::string& str);
 inline void Getline(std::string& str);
 void Start();
@@ -60,6 +62,7 @@ void AddNewUser();
 void ChangePass();
 void DeleteUser();
 void StorageReturner();
+void ShowIncome();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 size_t checkSize = 0;
@@ -128,7 +131,37 @@ void Selling()
 					Getline(choose);
 					if (choose == "1")
 					{
-
+						std::cout << "Введите кол-во наличных: ";
+						Getline(chooseMoney);
+						if (IsNumber(chooseMoney))
+						{
+							money = std::stod(chooseMoney);
+							if (money < totalSum)
+							{
+								std::cout << "Недостаточно средств!\n";
+								Sleep(1500);
+								continue;
+							}
+							else if (money - totalSum > cash)
+							{
+								std::cout << "Нет возможности дакт сдачи, повторите попытку!\n";
+								Sleep(1500);
+								continue;
+							}
+							else
+							{
+								std::cout << "Ваши: " << money << "\n";
+								Sleep(400);
+								std::cout << "Оплата прошла успешно. Сдача: " << money - totalSum << " рублей\n";
+								Sleep(2000);
+								cash += totalSum;
+								cash -= money - totalSum;
+								cashIncome += totalSum;
+								salesArr[currentId] += totalSum;
+								system("cls");
+								break;
+							}
+						}
 					}
 					else if (choose == "2")
 					{
@@ -152,11 +185,14 @@ void Selling()
 					}
 					else if (choose == "Samsung")
 					{
-
+						std::cout << "Великий самсунг оплатил вам чек. Всего доброго\n";
+						Sleep(1500);
+						system("cls");
+						break;
 					}
 					else
 					{
-
+						Err();
 					}
 
 				}
@@ -183,6 +219,12 @@ void Selling()
 			delete[] countArrCheck;
 			delete[] priceArrCheck;
 			delete[] totalPriceArrCheck;
+			idArrCheck = nullptr;
+			nameArrCheck = nullptr;
+			countArrCheck = nullptr;
+			priceArrCheck = nullptr;
+			totalPriceArrCheck = nullptr;
+
 			break;
 		}
 
@@ -220,8 +262,11 @@ void Selling()
 		}
 		else
 		{
+			Err();
 			continue;
 		}
+
+		
 		CheckArrPushback();
 		if (isFirst == false)
 		{
@@ -252,7 +297,7 @@ void PrintCheck(double& totalSum)
 	}
 	std::cout << "\nИтого к оплате: " << totalSum << "\n\n";
 }
-void CheckArrPushback(const bool& isFirst)
+void CheckArrPushback()
 {
 	checkSize++;
 	int* idArrCheckTemp = new int[checkSize];
@@ -271,22 +316,14 @@ void CheckArrPushback(const bool& isFirst)
 	std::swap(countArrCheckTemp, countArrCheck);
 	std::swap(priceArrCheckTemp, priceArrCheck);
 	std::swap(totalPriceArrCheckTemp, totalPriceArrCheck);
-	if (isFirst == false)
-	{
-		delete idArrCheckTemp;
-		delete nameArrCheckTemp;
-		delete countArrCheckTemp;
-		delete priceArrCheckTemp;
-		delete totalPriceArrCheckTemp;
-	}
-	else
-	{
+
+	
 		delete[] idArrCheckTemp;
 		delete[] nameArrCheckTemp;
 		delete[] countArrCheckTemp;
 		delete[] priceArrCheckTemp;
 		delete[] totalPriceArrCheckTemp;
-	}
+	
 }
 void ChangePrice()
 {
@@ -627,6 +664,7 @@ void ShowUsers(int mode)
 		
 	}
 }
+bool Logout();
 void AddNewItem()
 {
 	std::string newName, newPrice, newCount, choose;
@@ -1041,7 +1079,24 @@ void StorageReturner()
 	delete[] countArrCheck;
 	delete[] priceArrCheck;
 	delete[] totalPriceArrCheck;
+	idArrCheck;
+	nameArrCheck = nullptr;
+	countArrCheck = nullptr;
+	priceArrCheck = nullptr;
+	totalPriceArrCheck = nullptr;
 	checkSize = 0;
+}
+void ShowIncome()
+{
+	system("cls");
+	std::cout << "Текущая прибыль за смену\n\n";
+	std::cout << "Наличный рассчет: " << "\n";
+	std::cout << "Безналичный расчет: " << bankIncome << "\n";
+	std::cout << "Итого: " << bankIncome + cashIncome << "\n\n";
+	std::cout << "Сумма ваших продаж: " << salesArr[currentId] << "\n\n";
+
+	system("pause");
+	system("cls");
 }
 void ChangePass()
 {
@@ -1481,7 +1536,73 @@ void ShowSuperAdminMenu()
 
 
 }
-bool IsNumber(const std::string& str) 
+void ShowAdminMenu()
+{
+std::string choose;
+	while (true)
+	{
+		std::cout << "1 - Начать продажу\n";
+		std::cout << "2 - Показать склад\n";
+		std::cout << "3 - Пополнить склад\n";
+		std::cout << "4 - Списать товар\n";
+		std::cout << "5 - Изменить цену\n";
+		std::cout << "6 - Редактировать склад\n";
+		std::cout << "7 - Редактировать персонал\n";
+		std::cout << "8 - Отчет о прибыли\n";
+		std::cout << "0 - Закрыть смену\n";
+		std::cout << "Ввод: ";
+		Getline(choose);
+		if (choose == "1" && storageSize > 0)
+		{
+
+			Selling();
+
+		}
+		else if (choose == "2" && storageSize > 0)
+		{
+			ShowStorage();
+		}
+		else if (choose == "3" && storageSize > 0)
+		{
+			AddStorageItem();
+		}
+		else if (choose == "4" && storageSize > 0)
+		{
+			RemoveStorageItem();
+		}
+		
+
+		else if (choose == "5")
+		{
+			ChangeStorage();
+		}
+
+		else if (choose == "6")
+		{
+			ChangeAccount();
+		}
+
+		else if (choose == "7")
+		{
+
+		}
+
+		else if (choose == "0")
+		{
+			break;
+		}
+		else
+		{
+			Err();
+		}
+
+	}
+}
+void ShowuserMenu()
+{
+	
+}
+bool IsNumber(const std::string& str)
 {
 	if (str.size() <= 0 || str.size() >= 10)
 	{
@@ -1508,67 +1629,75 @@ void Start()
 {
 	std::string choose;
 	std::cout << "\n\n\nФпс до небес\n\n\n";
-
-	if (Login())
+	while (true)
 	{
-		system("cls");
-		if (currentStatus == userStatus[0])
+		if (Login())
 		{
-			while (true)
+			system("cls");
+			if (currentStatus == userStatus[0])
 			{
-				std::cout << "Выберите тип склада\n1 - Готовый\n2 - Новый\nВвод: ";
-				Getline(choose);
-				if (choose == "1")
+				while (true)
 				{
-					if (isStorageCreated == false)
+					std::cout << "Выберите тип склада\n1 - Готовый\n2 - Новый\nВвод: ";
+					Getline(choose);
+					if (choose == "1")
 					{
-						CreateStorage();
+						if (isStorageCreated == false)
+						{
+							CreateStorage();
+						}
+
+						system("cls");
+						ShowSuperAdminMenu();
+						break;
 					}
-					
-					system("cls");
-					ShowSuperAdminMenu();
-					break;
-				}
-				else if (choose == "2")
-				{
-					if (isStorageCreated == false)
+					else if (choose == "2")
 					{
-						
+						if (isStorageCreated == false)
+						{
+
+						}
+						//создать новый склад
+						ShowSuperAdminMenu();
+						break;
 					}
-					//создать новый склад
-					ShowSuperAdminMenu();
-					break;
+					else
+					{
+						Err();
+					}
 				}
-				else
+
+			}
+			else if (currentStatus == userStatus[1])
+			{
+				if (isStorageCreated == false)
 				{
-					Err();
+					CreateStorage();
 				}
+				ShowAdminMenu();
 			}
-			
-		}
-		else if (currentStatus == userStatus[1])
-		{
-			if (isStorageCreated == false)
+			else if (currentStatus == userStatus[2])
 			{
-				CreateStorage();
+				if (isStorageCreated == false)
+				{
+					CreateStorage();
+				}
+				system("cls");
+				ShowAdminMenu();
+				break;
 			}
+
 		}
-		else if (currentStatus == userStatus[2])
+		else
 		{
-			if (isStorageCreated == false)
-			{
-				CreateStorage();
-			}
+			system("cls");
+			std::cout << "Итоговая прибыль за смену: " << cashIncome + bankIncome;
+			std::cout << "\n\n\tЗавершение работы\n";
+			Sleep(2000);
+			system("cls");
+			break;
 		}
-
 	}
-	else
-	{
-		std::cout << "Завершение работы\n";
-		Sleep(2000);
-		system("cls");
-	}
-
 }
 bool Login()
 {
@@ -1625,6 +1754,31 @@ inline void Err()
 {
 	std::cout << "Некорректный ввод\n\n";
 
+}
+
+bool Logout()
+{
+	std::string choose;
+	while (true)
+	{
+		system("cls");
+		std::cout << "Для подтверждения выхода из пользователя введите ваш пароль или \"exit\" для возврата в меню.";
+		Getline(choose);
+		if (choose == "exit")
+		{
+			system("cls");
+			return false;
+		}
+		else if (choose == passArr[currentId - 1] || choose == passArr[0])
+		{
+			system("cls");
+			return true;
+		}
+		else
+		{
+			Err();
+		}
+	}
 }
 
 template<typename ArrType>
