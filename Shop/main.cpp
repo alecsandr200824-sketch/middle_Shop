@@ -17,7 +17,7 @@ double* salesArr = new double[userSize] {0.0, 0.0};
 unsigned int* userIdArr = new unsigned int[userSize] {1, 2};
 unsigned int currentId = 0;
 std::string currentStatus;
-void CheckArrPushback();
+void CheckArrPushback(const bool& isFirst);
 void ChangeAccount();
 void PrintCheck(double& totalSum);
 
@@ -59,6 +59,7 @@ void SetPassSymbols();
 void AddNewUser();
 void ChangePass();
 void DeleteUser();
+void StorageReturner();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 size_t checkSize = 0;
@@ -99,7 +100,8 @@ void Selling()
 	std::string chooseId, chooseCount, chooseMoney, choose;
 	unsigned int id = 0, count = 0, index = -1;
 	double money = 0.0, totalSum = 0.0;
-
+	bool isFirst = false;
+	checkSize = 0;
 	while (true)
 	{
 		ShowStorage();
@@ -108,10 +110,80 @@ void Selling()
 		Getline(chooseId);
 		if (chooseId == "exit")
 		{
+			system("cls");
+			if (isFirst == false)
+			{
+				std::cout << "Выход без покупок\n";
+				Sleep(1500);
+				break;
+			}
 			PrintCheck(totalSum);
+			std::cout << "\nПодтвердить покупку?\n1 - Да\n2 - Добавить еще товар\n3 - Отмена\nВвод: ";
+			if (choose == "1")
+			{
+				while (true)
+				{
+					system("cls");
+					std::cout << "Введите способ оплаты\n1 - Наличными\n1 - Безнал\nВвод: ";
+					Getline(choose);
+					if (choose == "1")
+					{
 
+					}
+					else if (choose == "2")
+					{
+						std::cout << "Приложите карту\n\n";
+						Sleep(1000);
+						if (rand() % 10 <= 2)
+						{
+							for (size_t i = 0; i < 5; i++)
+							{
+								std::cout << i + 1 << "\t";
+								Sleep(500);
+							}
+							std::cout << "\nОплата прошла успешно\n\nСпасибо за покупку!";
+							bankIncome += totalSum;
+							salesArr[currentId] += totalSum;
+							system("cls");
+							Sleep(1500);
+							break;
+
+						}
+					}
+					else if (choose == "Samsung")
+					{
+
+					}
+					else
+					{
+
+					}
+
+				}
+			}
+			else if (choose == "2")
+			{
+				continue;
+			}
+			else if (choose == "3")
+			{
+				std::cout << "Отмена покупки!\n";
+				void StorageReturner();
+				Sleep(1500);
+				return;
+			}
+			else
+			{
+				Err();
+				continue;
+			}
 			system("pause");
-			delete[]idArrCheck, nameArrCheck, countArrCheck, priceArrCheck, totalPriceArrCheck;
+			delete[] idArrCheck;
+			delete[] nameArrCheck;
+			delete[] countArrCheck;
+			delete[] priceArrCheck;
+			delete[] totalPriceArrCheck;
+			break;
 		}
 
 		if (IsNumber(chooseId))
@@ -138,7 +210,7 @@ void Selling()
 		}
 		if (IsNumber(chooseCount))
 		{
-			id = std::stoi(chooseId) - 1;
+			count = std::stoi(chooseCount) - 1;
 			if (count < 1 || count > coutArr[id])
 			{
 				std::cout << "Ошибка кол-ва! Максимум: " << coutArr[id] << "\n\n";
@@ -150,7 +222,11 @@ void Selling()
 		{
 			continue;
 		}
-		void CheckArrPushback();
+		CheckArrPushback();
+		if (isFirst == false)
+		{
+			isFirst = true;
+		}
 		index++;
 		idArrCheck[index] = idArr[id];
 		nameArrCheck[index] = nameArr[id];
@@ -176,7 +252,7 @@ void PrintCheck(double& totalSum)
 	}
 	std::cout << "\nИтого к оплате: " << totalSum << "\n\n";
 }
-void CheckArrPushback()
+void CheckArrPushback(const bool& isFirst)
 {
 	checkSize++;
 	int* idArrCheckTemp = new int[checkSize];
@@ -195,6 +271,22 @@ void CheckArrPushback()
 	std::swap(countArrCheckTemp, countArrCheck);
 	std::swap(priceArrCheckTemp, priceArrCheck);
 	std::swap(totalPriceArrCheckTemp, totalPriceArrCheck);
+	if (isFirst == false)
+	{
+		delete idArrCheckTemp;
+		delete nameArrCheckTemp;
+		delete countArrCheckTemp;
+		delete priceArrCheckTemp;
+		delete totalPriceArrCheckTemp;
+	}
+	else
+	{
+		delete[] idArrCheckTemp;
+		delete[] nameArrCheckTemp;
+		delete[] countArrCheckTemp;
+		delete[] priceArrCheckTemp;
+		delete[] totalPriceArrCheckTemp;
+	}
 }
 void ChangePrice()
 {
@@ -938,6 +1030,19 @@ void DeleteUser()
 		}
 	}
 }
+void StorageReturner()
+{
+	for (size_t i = 0; i < checkSize; i++)
+	{
+		coutArr[idArrCheck[i] - 1] += countArrCheck[i];
+	}
+	delete[] idArrCheck;
+	delete[] nameArrCheck;
+	delete[] countArrCheck;
+	delete[] priceArrCheck;
+	delete[] totalPriceArrCheck;
+	checkSize = 0;
+}
 void ChangePass()
 {
 	std::string newPass1, newPass2, choose;
@@ -1328,7 +1433,7 @@ void ShowSuperAdminMenu()
 		if (choose == "1" && storageSize > 0)
 		{
 
-
+			Selling();
 
 		}
 		else if (choose == "2" && storageSize > 0)
