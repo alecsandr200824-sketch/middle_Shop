@@ -1520,12 +1520,16 @@ void ShowSuperAdminMenu()
 
 		else if (choose == "8")
 		{
-
+			ShowIncome();
 		}
 
 		else if (choose == "0")
 		{
-			break;
+			if (Logout() == true)
+			{
+				break;
+			}
+				
 		}
 		else
 		{
@@ -1600,7 +1604,47 @@ std::string choose;
 }
 void ShowuserMenu()
 {
-	
+	std::string choose;
+	while (true)
+	{
+		std::cout << "1 - Начать продажу\n";
+		std::cout << "2 - Показать склад\n";
+		std::cout << "8 - Отчет о прибыли\n";
+		std::cout << "0 - Закрыть смену\n";
+		std::cout << "Ввод: ";
+		Getline(choose);
+		if (choose == "1" && storageSize > 0)
+		{
+
+			Selling();
+
+		}
+		else if (choose == "2" && storageSize > 0)
+		{
+			ShowStorage();
+		}
+
+		else if (choose == "3")
+		{
+			ShowIncome();
+		}
+
+		else if (choose == "0")
+		{
+			if (Logout() == true)
+			{
+				break;
+			}
+				
+		}
+		else
+		{
+			Err();
+		}
+		
+	}
+
+
 }
 bool IsNumber(const std::string& str)
 {
@@ -1688,7 +1732,7 @@ void Start()
 			}
 
 		}
-		else
+		else if(currentStatus == userStatus[0] && currentStatus == userStatus[1])
 		{
 			system("cls");
 			std::cout << "Итоговая прибыль за смену: " << cashIncome + bankIncome;
