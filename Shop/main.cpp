@@ -64,6 +64,8 @@ void DeleteUser();
 void StorageReturner();
 void ShowIncome();
 void CreateEmptyStorage();
+double VolumeDiscount(double totalSum);
+double TimeDiscount(double totalSum);
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 size_t checkSize = 0;
@@ -99,6 +101,30 @@ int main()
 	}
 	return 0;
 }
+double VolumeDiscount(double totalSum)
+{
+	if (totalSum >= 25000)
+		return totalSum * 0.10; // 10%
+	else if (totalSum >= 10000)
+		return totalSum * 0.05; // 5%
+
+	return 0.0;
+}
+double TimeDiscount(double totalSum)
+{
+	time_t now = time(nullptr);
+	tm localTime{};
+	localtime_s(&localTime, &now);
+
+	int hour = localTime.tm_hour;
+
+	// Счастливые часы: 12–14
+	if (hour >= 12 && hour < 14)
+		return totalSum * 0.07; // 7%
+
+	return 0.0;
+}
+
 void Selling()
 {
 	if (!isStorageCreated || storageSize == 0)
@@ -129,6 +155,24 @@ void Selling()
 				Sleep(1500);
 				break;
 			}
+			double discount1 = VolumeDiscount(totalSum);
+			double discount2 = TimeDiscount(totalSum);
+
+			double totalDiscount = discount1 + discount2;
+			double finalSum = totalSum - totalDiscount;
+
+			std::cout << "\nСкидки:\n";
+			if (discount1 > 0)
+				std::cout << "Объёмная скидка: -" << discount1 << " руб.\n";
+			if (discount2 > 0)
+				std::cout << "Скидка по времени: -" << discount2 << " руб.\n";
+
+			std::cout << "Итого скидка: -" << totalDiscount << " руб.\n";
+			std::cout << "К оплате: " << finalSum << " руб.\n\n";
+
+			totalSum = finalSum;
+
+			
 			PrintCheck(totalSum);
 			std::cout << "\nПодтвердить покупку?\n1 - Да\n2 - Добавить еще товар\n3 - Отмена\nВвод: ";
 			if (choose == "1")
