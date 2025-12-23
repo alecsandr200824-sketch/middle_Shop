@@ -63,6 +63,7 @@ void ChangePass();
 void DeleteUser();
 void StorageReturner();
 void ShowIncome();
+void CreateEmptyStorage();
 template<typename ArrType>
 void FillArr(ArrType* dynamicArr, ArrType* staticArr, size_t arraySize);
 size_t checkSize = 0;
@@ -100,6 +101,12 @@ int main()
 }
 void Selling()
 {
+	if (!isStorageCreated || storageSize == 0)
+	{
+		std::cout << "Склад пуст. Продажа невозможна.\n";
+		Sleep(1500);
+		return;
+	}
 	std::string chooseId, chooseCount, chooseMoney, choose;
 	unsigned int id = 0, count = 0, index = -1;
 	double money = 0.0, totalSum = 0.0;
@@ -107,6 +114,8 @@ void Selling()
 	checkSize = 0;
 	while (true)
 	{
+	
+		
 		ShowStorage();
 
 		std::cout << "Введите ID товара для покупки или\"exit\" для завершения покупок: ";
@@ -327,6 +336,13 @@ void CheckArrPushback()
 }
 void ChangePrice()
 {
+	if (!isStorageCreated || storageSize == 0)
+	{
+		std::cout << "Склад пуст. Нет товаров для изменения цены.\n";
+		Sleep(1500);
+		return;
+	}
+	
 	std::string chooseId, choosePrice, choose;
 	unsigned int id = 0;
 	double newPrice;
@@ -606,6 +622,12 @@ void AddNewUser()
 }
 void ChangeStorage()
 {
+	if (!isStorageCreated)
+	{
+		std::cout << "Склад не создан.\n";
+		Sleep(1500);
+		return;
+	}
 	std::string choose;
 	while (true)
 	{
@@ -1233,6 +1255,15 @@ bool CheckLogin(const std::string& str)
 }
 void ShowStorage(int mode)
 {
+	
+	if (!isStorageCreated || storageSize == 0)
+	{
+		std::cout << "Склад пуст.\n";
+		Sleep(1500);
+		system("cls");
+		return;
+	}
+	
 	if (mode == 0)
 	{
 		std::cout << "ID\t" << std::left << std::setw(25) << "Название товара\t\t"
@@ -1332,6 +1363,13 @@ void ChangeAccount()
 }
 void AddStorageItem()
 {
+	if (!isStorageCreated || storageSize == 0)
+	{
+		std::cout << "Склад пуст. Сначала добавьте товары.\n";
+		Sleep(1500);
+		return;
+	}
+	
 	std::string chooseId, chooseCount, choose;
 	unsigned int id = 0, count = 0;
 	while (true)
@@ -1400,7 +1438,12 @@ void AddStorageItem()
 }
 void RemoveStorageItem()
 {
-	
+	if (!isStorageCreated || storageSize == 0)
+	{
+		std::cout << "Склад пуст. Списание невозможно.\n";
+		Sleep(1500);
+		return;
+	}
 	
 		std::string chooseId, chooseCount, choose;
 		unsigned int id = 0, count = 0;
@@ -1485,25 +1528,25 @@ void ShowSuperAdminMenu()
 		std::cout << "0 - Закрыть смену\n";
 		std::cout << "Ввод: ";
 		Getline(choose);
-		if (choose == "1" && storageSize > 0)
+		if (choose == "1")
 		{
 
 			Selling();
 
 		}
-		else if (choose == "2" && storageSize > 0)
+		else if (choose == "2")
 		{
 			ShowStorage();
 		}
-		else if (choose == "3" && storageSize > 0)
+		else if (choose == "3")
 		{
 			AddStorageItem();
 		}
-		else if (choose == "4" && storageSize > 0)
+		else if (choose == "4")
 		{
 			RemoveStorageItem();
 		}
-		else if (choose == "5" && storageSize > 0)
+		else if (choose == "5")
 		{
 			ChangePrice();
 		}
@@ -1613,13 +1656,13 @@ void ShowuserMenu()
 		std::cout << "0 - Закрыть смену\n";
 		std::cout << "Ввод: ";
 		Getline(choose);
-		if (choose == "1" && storageSize > 0)
+		if (choose == "1")
 		{
 
 			Selling();
 
 		}
-		else if (choose == "2" && storageSize > 0)
+		else if (choose == "2")
 		{
 			ShowStorage();
 		}
@@ -1699,7 +1742,10 @@ void Start()
 					{
 						if (isStorageCreated == false)
 						{
-
+							CreateEmptyStorage();
+							system("cls");
+							ShowSuperAdminMenu();
+							break;
 						}
 						//создать новый склад
 						ShowSuperAdminMenu();
@@ -1743,6 +1789,30 @@ void Start()
 		}
 	}
 }
+void CreateEmptyStorage()
+{
+	// если склад уже был — чистим память
+	if (isStorageCreated)
+	{
+		delete[] idArr;
+		delete[] nameArr;
+		delete[] coutArr;
+		delete[] priceArr;
+	}
+
+	storageSize = 0;
+
+	idArr = nullptr;
+	nameArr = nullptr;
+	coutArr = nullptr;
+	priceArr = nullptr;
+
+	isStorageCreated = true;
+
+	std::cout << "Новый склад успешно создан (пустой)\n";
+	Sleep(1500);
+}
+
 bool Login()
 {
 	std::string login, pass;
