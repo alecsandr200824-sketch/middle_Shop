@@ -13,10 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\storage">
+      <UniqueIdentifier>{3b3f4d84-abc6-4da0-9f82-7876adf08c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\users">
+      <UniqueIdentifier>{bacc1c42-fa01-4fec-854d-16521d03c89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\sales">
+      <UniqueIdentifier>{95daa0c1-3157-4f10-8845-2a08589d6052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\system">
+      <UniqueIdentifier>{6c87fcdc-8d09-495b-8d4f-d7975e0f49f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\utils">
+      <UniqueIdentifier>{d54251f4-129c-4c2b-b74b-825d1343797f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="storage.cpp">
+      <Filter>Исходные файлы\storage</Filter>
+    </ClCompile>
+    <ClCompile Include="users.cpp">
+      <Filter>Исходные файлы\users</Filter>
+    </ClCompile>
+    <ClCompile Include="sales.cpp">
+      <Filter>Исходные файлы\sales</Filter>
+    </ClCompile>
+    <ClCompile Include="system.cpp">
+      <Filter>Исходные файлы\system</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Исходные файлы\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="storage.h">
+      <Filter>Исходные файлы\storage</Filter>
+    </ClInclude>
+    <ClInclude Include="users.h">
+      <Filter>Исходные файлы\users</Filter>
+    </ClInclude>
+    <ClInclude Include="sales.h">
+      <Filter>Исходные файлы\sales</Filter>
+    </ClInclude>
+    <ClInclude Include="system.h">
+      <Filter>Исходные файлы\system</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Исходные файлы\utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
