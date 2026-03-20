@@ -128,6 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sales.cpp" />
+    <ClCompile Include="storage.cpp" />
+    <ClCompile Include="system.cpp" />
+    <ClCompile Include="users.cpp" />
+    <ClCompile Include="utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sales.h" />
+    <ClInclude Include="storage.h" />
+    <ClInclude Include="system.h" />
+    <ClInclude Include="users.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
